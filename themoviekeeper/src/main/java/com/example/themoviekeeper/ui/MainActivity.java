@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
 
-
             requestAppPermissions();
 
         }
@@ -115,10 +114,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
-
-                            ActivityCompat.requestPermissions(MainActivity.this,
-                                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                    1);
+                            requestAppPermissions();
 
                         }
                     });
@@ -132,10 +128,8 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
 
-
                     alertDialog.setCancelable(false);
                     alertDialog.show();
-
 
                 }
         }

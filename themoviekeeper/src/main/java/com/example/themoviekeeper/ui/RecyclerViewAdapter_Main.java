@@ -17,6 +17,7 @@ import com.example.themoviekeeper.R;
 import com.example.themoviekeeper.db.MyMovie;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static com.example.themoviekeeper.db.DBConstants.CALL_EDITMYMOVIEACTIVITY_UPDATE;
@@ -60,14 +61,18 @@ public class RecyclerViewAdapter_Main extends RecyclerView.Adapter<RecyclerViewA
         holder.tv_metascore_rcva_main.setText(_list.get(position).getMetascore());
 
 
-        String poster = _list.get(position).getPoster();
+        String imgUrlOrPath = _list.get(position).getPoster();
 
-        if (poster != null && poster.length()>0){
+        if (imgUrlOrPath != null && imgUrlOrPath.length()>0){
 
-            Picasso.with(_activity).load(poster).placeholder(R.drawable.movie_default).into(holder.iv_rcva_main);
-        }
-        else{
-            Picasso.with(_activity).load(R.drawable.movie_default).into(holder.iv_rcva_main);
+            if (imgUrlOrPath.contains("storage") ||
+                    imgUrlOrPath.contains("sdcard")){
+                Picasso.with(_activity).load(new File(imgUrlOrPath)).into(holder.iv_rcva_main);
+            }
+            if (imgUrlOrPath.contains("http://") ||
+                    imgUrlOrPath.contains("https://") ){
+                Picasso.with(_activity).load(imgUrlOrPath).into(holder.iv_rcva_main);
+            }
         }
 
     }

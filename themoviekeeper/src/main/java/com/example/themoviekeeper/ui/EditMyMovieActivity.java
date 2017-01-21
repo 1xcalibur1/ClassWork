@@ -33,6 +33,7 @@ import com.example.themoviekeeper.db.MyMovieHelper;
 import com.example.themoviekeeper.networking.Task_GetMyMovieDetails;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static com.example.themoviekeeper.R.id.et_category_desc_edit;
@@ -127,7 +128,20 @@ public class EditMyMovieActivity extends AppCompatActivity {
 
                 if (myMovie.getPoster() != null && myMovie.getPoster().length()>0) {
 
-                    Picasso.with(this).load(myMovie.getPoster()).placeholder(R.drawable.movie_default).into(iv_edit);
+                    String imgUrlOrPath = myMovie.getPoster();
+
+                    if (imgUrlOrPath.contains("storage") ||
+                            imgUrlOrPath.contains("sdcard")){
+                        Picasso.with(EditMyMovieActivity.this).load(new File(imgUrlOrPath)).into(iv_edit);
+                    }
+                    if (imgUrlOrPath.contains("http://") ||
+                            imgUrlOrPath.contains("https://") ){
+                        Picasso.with(EditMyMovieActivity.this).load(imgUrlOrPath).into(iv_edit);
+                    }
+
+                }
+                else{
+                    //Picasso.with(this).load(R.drawable.movie_default).into(iv_edit);
                 }
 
                 ArrayList<MyMovieCategory> myMovieCategoryArrayList = MyMovieToMyCategoryArrayList(myMovie);
@@ -165,7 +179,7 @@ public class EditMyMovieActivity extends AppCompatActivity {
 
                 if (isTitleFieldPopulated()) {
 
-                    EditText et_tempTitle = (EditText)rv_edit.findViewHolderForAdapterPosition(0).itemView.findViewById(et_category_desc_edit);;
+                    EditText et_tempTitle = (EditText)rv_edit.findViewHolderForAdapterPosition(0).itemView.findViewById(et_category_desc_edit);
                     String tempTitle = et_tempTitle.getText().toString();
 
                     if (MovieDoesNotExist(tempTitle)) {
