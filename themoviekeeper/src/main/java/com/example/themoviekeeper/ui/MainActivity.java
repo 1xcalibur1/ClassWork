@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //added some shit
+
 
         floatingActionButton = (FloatingActionButton)findViewById(R.id.floatingButton);
         rv_main = (RecyclerView)findViewById(R.id.rv_main);
