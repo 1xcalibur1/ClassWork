@@ -13,7 +13,6 @@ import android.widget.Toast;
 import com.example.themoviekeeper.R;
 import com.example.themoviekeeper.db.MyMovie;
 import com.example.themoviekeeper.db.MyMovieHelper;
-import com.example.themoviekeeper.networking.Task_DownloadImage;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -67,11 +66,6 @@ public class RecyclerViewAdapter_Search extends RecyclerView.Adapter<RecyclerVie
         else{
             Picasso.with(_activity).load(R.drawable.movie_default).into(holder.iv_poster);
         }
-
-//        Task_DownloadImage dlImage = new Task_DownloadImage(_activity,holder);
-//        String [] imageUrl ={poster};
-//        dlImage.execute(imageUrl);
-
 
     }
 
