@@ -111,8 +111,6 @@ public class RecyclerViewAdapter_Search extends RecyclerView.Adapter<RecyclerVie
 
                     }
 
-
-
                 }
             });
 

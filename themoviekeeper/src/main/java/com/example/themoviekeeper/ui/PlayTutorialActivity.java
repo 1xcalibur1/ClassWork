@@ -31,6 +31,7 @@ public class PlayTutorialActivity extends YouTubeBaseActivity implements YouTube
 
 
 
+
     }
 
 
@@ -43,6 +44,7 @@ public class PlayTutorialActivity extends YouTubeBaseActivity implements YouTube
         if (!wasRestored) {
             player.cueVideo(VIDEO_ID);
         }
+        player.loadVideo(VIDEO_ID);
     }
     private PlaybackEventListener playbackEventListener = new PlaybackEventListener() {
         @Override
@@ -88,6 +90,9 @@ public class PlayTutorialActivity extends YouTubeBaseActivity implements YouTube
         if (youTubeInitializationResult.toString().equals("SERVICE_MISSING")){
 
             Toast.makeText(this, "Please install YouTube", Toast.LENGTH_LONG).show();
+        }
+        else{
+            Toast.makeText(this, youTubeInitializationResult.toString(), Toast.LENGTH_LONG).show();
         }
 
 
