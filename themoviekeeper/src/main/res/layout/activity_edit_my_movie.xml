@@ -39,7 +39,6 @@
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
 
-                    android:fitsSystemWindows="true"
                     app:layout_collapseMode="pin"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
@@ -111,17 +110,16 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="5dp">
+            android:padding="5dp"
+            >
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
                 android:id="@+id/rv_edit"
-                android:nestedScrollingEnabled="false">
+                android:nestedScrollingEnabled="false"
+                android:layout_marginBottom="80dp">
             </android.support.v7.widget.RecyclerView>
-
-
 
         </LinearLayout>
 

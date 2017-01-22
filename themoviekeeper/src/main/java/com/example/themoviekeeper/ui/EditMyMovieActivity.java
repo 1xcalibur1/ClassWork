@@ -1,9 +1,12 @@
 package com.example.themoviekeeper.ui;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -34,6 +38,8 @@ import com.example.themoviekeeper.networking.Task_GetMyMovieDetails;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 import static com.example.themoviekeeper.R.id.et_category_desc_edit;
@@ -191,9 +197,18 @@ public class EditMyMovieActivity extends AppCompatActivity {
                             myMovieHelper = new MyMovieHelper(EditMyMovieActivity.this);
                             mymovie.setMoviestate(moviestate);
                             mymovie.setPersonalRating(ratingBarRating);
+
+                            if (mymovie.getPoster().contains("http://") ||
+                                    mymovie.getPoster().contains("https://") ){
+                                String localPoster =
+                                        getAndSaveConvertedImgFromWebToLocal(mymovie.getPoster());
+                                mymovie.setPoster(localPoster);
+                            }
+
                             myMovieHelper.add(mymovie);
 
                             Toast.makeText(EditMyMovieActivity.this, "Movie added successfully!", Toast.LENGTH_SHORT).show();
+                            onBackPressed();
                         }
 
                     }
@@ -214,8 +229,17 @@ public class EditMyMovieActivity extends AppCompatActivity {
                             mymovie.setId(databaseID);
                             mymovie.setMoviestate(moviestate);
                             mymovie.setPersonalRating(ratingBarRating);
+
+                            if (mymovie.getPoster().contains("http://") ||
+                                    mymovie.getPoster().contains("https://") ){
+                                String localPoster =
+                                        getAndSaveConvertedImgFromWebToLocal(mymovie.getPoster());
+                                mymovie.setPoster(localPoster);
+                            }
+
                             myMovieHelper.updateMyMovie(mymovie);
                             Toast.makeText(EditMyMovieActivity.this, "Movie updated!", Toast.LENGTH_SHORT).show();
+                            onBackPressed();
                         }
 
 
@@ -253,6 +277,46 @@ public class EditMyMovieActivity extends AppCompatActivity {
 
             }
         });
+
+
+    }
+
+    public String getAndSaveConvertedImgFromWebToLocal(String moviePoster){
+
+        Bitmap bitmap;
+        OutputStream output;
+        String moviePosterConverted;
+
+        moviePosterConverted = URLUtil.guessFileName(moviePoster,null,null);
+
+        //         Picasso.with(MainActivity.this).load("https://pbs.twimg.com/profile_images/616076655547682816/6gMRtQyY.jpg").into(imageView);
+
+        bitmap = ((BitmapDrawable) iv_edit.getDrawable()).getBitmap();
+        File filepath = Environment.getExternalStorageDirectory();
+        File dir = new File(filepath.getAbsolutePath()+"/TheMovieKeeper");
+
+        if (!dir.isDirectory()){
+            dir.mkdir();
+            //Toast.makeText(MainActivity.this,"dir created",Toast.LENGTH_SHORT).show();
+
+        }
+
+        File file = new File(dir,moviePosterConverted);
+
+        try{
+
+            output = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG,100,output);
+            output.flush();
+            output.close();
+            //Toast.makeText(MainActivity.this,"Image Saved",Toast.LENGTH_SHORT).show();
+
+        }
+        catch (Exception e){
+            Toast.makeText(EditMyMovieActivity.this,e.getMessage(),Toast.LENGTH_LONG).show();
+        }
+
+        return file.getAbsolutePath();
 
 
     }

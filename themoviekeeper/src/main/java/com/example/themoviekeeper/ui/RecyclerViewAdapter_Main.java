@@ -54,11 +54,11 @@ public class RecyclerViewAdapter_Main extends RecyclerView.Adapter<RecyclerViewA
     public void onBindViewHolder(RecyclerViewAdapter_Main.MyViewHolder holder, int position) {
 
         holder.tv_moviename_rcva_main.setText(_list.get(position).getTitle());
-        holder.tv_duration_rcva_main.setText(_list.get(position).getRuntime());
+        //holder.tv_duration_rcva_main.setText(_list.get(position).getRuntime());
         holder.tv_imdbrating_rcva_main.setText(_list.get(position).getImdbrating());
         holder.tv_year_rcva_main.setText(_list.get(position).getYear());
         holder.rb_rcva_main.setRating(_list.get(position).getPersonalRating());
-        holder.tv_metascore_rcva_main.setText(_list.get(position).getMetascore());
+        //holder.tv_metascore_rcva_main.setText(_list.get(position).getMetascore());
 
 
         String imgUrlOrPath = _list.get(position).getPoster();
@@ -97,9 +97,9 @@ public class RecyclerViewAdapter_Main extends RecyclerView.Adapter<RecyclerViewA
             tv_moviename_rcva_main = (TextView)itemView.findViewById(R.id.tv_moviename_main_cv);
             tv_year_rcva_main = (TextView)itemView.findViewById(R.id.tv_year_mainactivity);
             tv_imdbrating_rcva_main = (TextView)itemView.findViewById(R.id.tv_imdbRating_mainactivity);
-            tv_duration_rcva_main = (TextView)itemView.findViewById(R.id.tv_duration_mainactivity);
+            //tv_duration_rcva_main = (TextView)itemView.findViewById(R.id.tv_duration_mainactivity);
             rb_rcva_main = (RatingBar)itemView.findViewById(R.id.rb_mainactiviry);
-            tv_metascore_rcva_main = (TextView)itemView.findViewById(R.id.tv_metascore_mainactivity);
+            //tv_metascore_rcva_main = (TextView)itemView.findViewById(R.id.tv_metascore_mainactivity);
             
 
 //            Drawable drawable = rb_rcva_main.getProgressDrawable();
