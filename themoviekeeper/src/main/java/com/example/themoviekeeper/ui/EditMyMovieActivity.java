@@ -342,21 +342,7 @@ public class EditMyMovieActivity extends AppCompatActivity {
                 et_tempPoster.setText(file.getAbsolutePath());
 
             }
-//            } else if (requestCode == REQUEST_PICK_IMAGE) {
-//                try {
-//                    Uri selectedImage = imageReturnedIntent.getData();
-//                    InputStream imageStream = getContentResolver().openInputStream(selectedImage);
-//                    Bitmap imageBitmap = BitmapFactory.decodeStream(imageStream);
-//                    Bitmap smallImage = Bitmap.createScaledBitmap(imageBitmap, 100, 100, false);
-//
-//                    iv_edit.setImageBitmap(smallImage);
-//                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
-//                    String imageFileName = "JPEG_" + timeStamp + ".jpg";
-//                    //movie.setPoster(imageFileName);
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//            }
+
         }
     }
 
@@ -422,7 +408,6 @@ public class EditMyMovieActivity extends AppCompatActivity {
 
         }
 
-        //myMovieHelper = new MyMovieHelper(EditMyMovieActivity.this);
         int itemCount = rva_edit.getItemCount();
         String colName, colData;
         View view;
@@ -440,8 +425,7 @@ public class EditMyMovieActivity extends AppCompatActivity {
 
 
             if (myMovieHelper.getDataExist(databaseID,colName,colData)){
-                //Toast.makeText(EditMyMovieActivity.this, "data present and shit works", Toast.LENGTH_SHORT).show();
-                //return true;
+
             }else{
 
                 return false;
@@ -455,9 +439,6 @@ public class EditMyMovieActivity extends AppCompatActivity {
 
     public boolean MovieDoesNotExist(String title){
 
-//        EditText et_tempTitle = (EditText)rv_edit.findViewHolderForAdapterPosition(0).itemView.findViewById(R.id.et_category_desc_edit);;
-//
-//        String tempTitle = et_tempTitle.getText().toString();
         myMovieHelper = new MyMovieHelper(EditMyMovieActivity.this);
         ArrayList<MyMovie> temp_arraylist = myMovieHelper.getAllMyMovies();
 
