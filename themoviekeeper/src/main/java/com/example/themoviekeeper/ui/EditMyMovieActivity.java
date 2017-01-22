@@ -291,12 +291,6 @@ public class EditMyMovieActivity extends AppCompatActivity {
 
     }
 
-    private void dispatchSelectImageFromGallery() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_PICK_IMAGE);
-    }
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -484,23 +478,31 @@ public class EditMyMovieActivity extends AppCompatActivity {
                 }
             case R.id.action_camera:
                 dispatchTakePictureIntent();
+                newDataAdded=true;
                 return true;
 
             case R.id.action_delete_movie:
-                break;
 
+                int databaseID = getIntent().getIntExtra("Id",-1);
+
+                if (databaseID !=-1){
+                    newDataAdded=true;
+                    myMovieHelper.deleteMyMovie(String.valueOf(databaseID));
+                    onBackPressed();
+                    return true;
+                }
+                Toast.makeText(this,"Nothing to delete",Toast.LENGTH_SHORT).show();
+                return true;
         }
 
-
-
-        Intent intent = new Intent();
-        if (newDataAdded){
-            setResult(RESULT_OK,intent);
-        }
-        else{
-            setResult(RESULT_CANCELED,intent);
-        }
-        super.onBackPressed();
+//        Intent intent = new Intent();
+//        if (newDataAdded){
+//            setResult(RESULT_OK,intent);
+//        }
+//        else{
+//            setResult(RESULT_CANCELED,intent);
+//        }
+//        super.onBackPressed();
 
         return true;
     }

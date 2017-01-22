@@ -44,8 +44,6 @@ public class SearchMyMovieActivity extends AppCompatActivity {
                         WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
                 );
 
-
-
                 return false;
             }
 
@@ -93,6 +91,8 @@ public class SearchMyMovieActivity extends AppCompatActivity {
         }
         super.onBackPressed();
     }
+
+
 }
 
 
