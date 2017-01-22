@@ -495,14 +495,14 @@ public class EditMyMovieActivity extends AppCompatActivity {
                 return true;
         }
 
-//        Intent intent = new Intent();
-//        if (newDataAdded){
-//            setResult(RESULT_OK,intent);
-//        }
-//        else{
-//            setResult(RESULT_CANCELED,intent);
-//        }
-//        super.onBackPressed();
+        Intent intent = new Intent();
+        if (newDataAdded){
+            setResult(RESULT_OK,intent);
+        }
+        else{
+            setResult(RESULT_CANCELED,intent);
+        }
+        super.onBackPressed();
 
         return true;
     }
