@@ -2,11 +2,14 @@ package com.example.themoviekeeper.ui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -38,9 +41,14 @@ import com.example.themoviekeeper.networking.Task_GetMyMovieDetails;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import static com.example.themoviekeeper.R.id.et_category_desc_edit;
 import static com.example.themoviekeeper.R.id.iv_edit;
@@ -52,6 +60,8 @@ import static com.example.themoviekeeper.db.DBConstants.MOVIE_COLUMN_NAME_year;
 public class EditMyMovieActivity extends AppCompatActivity {
 
 
+    private static final int REQUEST_IMAGE_CAPTURE = 5;
+    private static final int REQUEST_PICK_IMAGE = 6;
     private FloatingActionButton fb_edit;
     private Toolbar toolbar;
     private Boolean newDataAdded = false;
@@ -281,6 +291,77 @@ public class EditMyMovieActivity extends AppCompatActivity {
 
     }
 
+    private void dispatchSelectImageFromGallery() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_PICK_IMAGE);
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                Bundle extras = imageReturnedIntent.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+                iv_edit.setImageBitmap(imageBitmap);
+                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
+                String imageFileName = "JPEG_" + timeStamp + ".jpg";
+                OutputStream output;
+
+                File filepath = Environment.getExternalStorageDirectory();
+                File dir = new File(filepath.getAbsolutePath() + "/TheMovieKeeper");
+
+                if (!dir.isDirectory()) {
+                    dir.mkdir();
+                }
+
+                File file = new File(dir, imageFileName);
+
+                try {
+
+                    output = new FileOutputStream(file);
+                    imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, output);
+                    output.flush();
+                    output.close();
+                    //Toast.makeText(MainActivity.this,"Image Saved",Toast.LENGTH_SHORT).show();
+
+                } catch (Exception e) {
+                    Toast.makeText(EditMyMovieActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+                EditText et_tempPoster = (EditText) rv_edit.findViewHolderForAdapterPosition(13).itemView.findViewById(et_category_desc_edit);
+                et_tempPoster.setText(file.getAbsolutePath());
+
+            }
+//            } else if (requestCode == REQUEST_PICK_IMAGE) {
+//                try {
+//                    Uri selectedImage = imageReturnedIntent.getData();
+//                    InputStream imageStream = getContentResolver().openInputStream(selectedImage);
+//                    Bitmap imageBitmap = BitmapFactory.decodeStream(imageStream);
+//                    Bitmap smallImage = Bitmap.createScaledBitmap(imageBitmap, 100, 100, false);
+//
+//                    iv_edit.setImageBitmap(smallImage);
+//                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
+//                    String imageFileName = "JPEG_" + timeStamp + ".jpg";
+//                    //movie.setPoster(imageFileName);
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+        }
+    }
+
+
+
     public String getAndSaveConvertedImgFromWebToLocal(String moviePoster){
 
         Bitmap bitmap;
@@ -289,15 +370,12 @@ public class EditMyMovieActivity extends AppCompatActivity {
 
         moviePosterConverted = URLUtil.guessFileName(moviePoster,null,null);
 
-        //         Picasso.with(MainActivity.this).load("https://pbs.twimg.com/profile_images/616076655547682816/6gMRtQyY.jpg").into(imageView);
-
         bitmap = ((BitmapDrawable) iv_edit.getDrawable()).getBitmap();
         File filepath = Environment.getExternalStorageDirectory();
         File dir = new File(filepath.getAbsolutePath()+"/TheMovieKeeper");
 
         if (!dir.isDirectory()){
             dir.mkdir();
-            //Toast.makeText(MainActivity.this,"dir created",Toast.LENGTH_SHORT).show();
 
         }
 
@@ -405,20 +483,6 @@ public class EditMyMovieActivity extends AppCompatActivity {
 
         switch (item.getItemId()){
 
-//            case R.id.action_mark_unseen:
-//                fb_edit.setImageResource(R.drawable.ic_check_circle_black_36dp);
-//                fb_edit.setVisibility(View.VISIBLE);
-//                int databaseID = getIntent().getIntExtra("Id", -1);
-//                myMovieHelper = new MyMovieHelper(EditMyMovieActivity.this);
-//                myMovieHelper.updateMyMovieMovieState(databaseID,"alreadyadded");
-//                moviestate="alreadyadded";
-//                return true;
-
-
-//            case R.id.action_delete_movie:
-//
-//                return true;
-
             case R.id.action_share_movie:
 
                 if (getMovieTitle().isEmpty()){
@@ -437,8 +501,16 @@ public class EditMyMovieActivity extends AppCompatActivity {
                     return true;
 
                 }
+            case R.id.action_camera:
+                dispatchTakePictureIntent();
+                return true;
+
+            case R.id.action_delete_movie:
+                break;
 
         }
+
+
 
         Intent intent = new Intent();
         if (newDataAdded){
