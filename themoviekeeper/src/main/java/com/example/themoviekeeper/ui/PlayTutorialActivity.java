@@ -18,7 +18,7 @@ import com.example.themoviekeeper.R;
 public class PlayTutorialActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 
     public static final String API_KEY = "AIzaSyAiVaFk-bqwVp7BpE_fu2uza8pE4bVocLM";
-    public static final String VIDEO_ID = "HgzGwKwLmgM";
+    public static final String VIDEO_ID = "Qvf5PKs0jEs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
